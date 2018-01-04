@@ -1,0 +1,12 @@
+{
+    "wifi": {
+        "ssid": "some fancy wifi",
+        "key": "wifi key"
+    },
+    "scenes": [
+        {
+            "name": "This is a hot scene",
+            "rgb": [255, 50, 0]
+        }
+    ]
+}
