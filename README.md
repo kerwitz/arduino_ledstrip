@@ -38,16 +38,19 @@ The project can be configured via `data\config.json`. Simply copy `data\config.e
 }
 ```
 
-Assuming "LED Strip" as `DEVICE_NAME` (see setup below), theses scenes will show up in the Alexa app as "LED Strip: Sunlight" and "LED Strip: Aquarium". Please note that the third scene is currently assumed to be an off trigger (see #1).
+Assuming "LED Strip" as `DEVICE_NAME` (see setup below), theses scenes will show up in the Alexa app as "LED Strip: Sunlight" and "LED Strip: Aquarium". Please note that the third scene is currently assumed to be an off trigger (see [#1](https://github.com/kerwitz/arduino_ledstrip/issues/1)).
 
 Setup
 ----------
 * **[Download the latest release](https://github.com/kerwitz/arduino_ledstrip/releases)**
 * **Install all dependencies**
- Either through the IDE or manually into the `libraries` folder.
+
+  Either through the IDE or manually into the `libraries` folder.
 * **Edit `ledstrip.ino` according to your setup**
- See NeoPixel docs for the right options for your LED strip.
+
+  See NeoPixel docs for the right options for your LED strip.
 * **Update the `DEVICE_NAME` to your liking**
- The scenes will be registered to fauxmoESP in `DEVICE_NAME: SCENE_NAME` fashion to make them distinguishable from other devices and scenes. 
+
+  The scenes will be registered to fauxmoESP in `DEVICE_NAME: SCENE_NAME` fashion to make them distinguishable from other devices and scenes. 
  
 That's it. Once you've configured everything and deployed the code to your Arduino device (such as a Wemos D1 Mini) you can discover the emulated network switches from within the Alexa app. Once your Echo device has discovered the switches you may use them to your liking, for example from within routines.
