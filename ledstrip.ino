@@ -11,16 +11,34 @@
 
 #define LED_STRIP_PIN D1
 #define LED_STRIP_TYPE NEO_GRB + NEO_KHZ800
-#define PIXEL_COUNT 120
-#define DEVICE_NAME "LED Strip"
-#define ANIMATION_TIME 1000
 
-OTAHelper otaHelper(DEVICE_NAME);
-SceneHelper sceneHelper(DEVICE_NAME);
-Adafruit_NeoPixel strip(PIXEL_COUNT, LED_STRIP_PIN, LED_STRIP_TYPE);
+OTAHelper otaHelper;
+SceneHelper sceneHelper;
+Adafruit_NeoPixel strip = Adafruit_NeoPixel();
+
 NeoPixelAnimator animations(1);
 RgbColor startColor(0, 0, 0);
 RgbColor targetColor(0, 0, 0);
+
+struct configurationStruct {
+    struct wifiStruct {
+        const char* ssid;
+        const char* key;
+    };
+    struct deviceStruct {
+        const char* name;
+        int pixels;
+    };
+    struct animationStruct {
+        int duration;
+    };
+    
+    wifiStruct wifi;
+    deviceStruct device;
+    animationStruct animation;
+};
+
+configurationStruct configuration;
 
 void setup() {
     Serial.begin(57600);    
@@ -28,6 +46,9 @@ void setup() {
     SPIFFS.begin();
     
     if (!readConfigurationAndInit()) return;
+    
+    otaHelper.setDeviceName(configuration.device.name);
+    sceneHelper.setDeviceName(configuration.device.name);
     
     prepareLedStrip();
     otaHelper.setup();
@@ -37,11 +58,16 @@ void setup() {
             "Scene changed, changing color of strip to rgb(%d,%d,%d).\n",
             r, g, b
         );
-
+        
+        // Our current color is the last animations target color.
         startColor = targetColor;
         targetColor = RgbColor(r, g, b);
 
-        animations.StartAnimation(0, ANIMATION_TIME, blendingAnimation);
+        animations.StartAnimation(
+            0, 
+            configuration.animation.duration, 
+            blendingAnimation
+        );
     });
 }
 
@@ -64,7 +90,7 @@ void blendingAnimation(const AnimationParam& param)
         param.progress
     );
 
-    for (uint16_t i = 0; i < PIXEL_COUNT; i++) {
+    for (uint16_t i = 0; i < configuration.device.pixels; i++) {
         strip.setPixelColor(i, color.G, color.R, color.B);
     }
 }
@@ -85,19 +111,25 @@ bool readConfigurationAndInit()
     DynamicJsonBuffer jsonBuffer;
     JsonObject& config = jsonBuffer.parseObject(buf.get());
     
-    connectWifi(config);
+    configuration.wifi.ssid = config["wifi"]["ssid"];
+    configuration.wifi.key = config["wifi"]["key"];
+    configuration.device.name = config["device"]["name"];
+    configuration.device.pixels = config["device"]["pixels"];
+    configuration.animation.duration = config["animation"]["duration"];
+    
+    connectWifi();
     loadScenes(config);
     
     return true;
 }
 
-void connectWifi(JsonObject& config)
+void connectWifi()
 {
-    const char* wifi_ssid = config["wifi"]["ssid"];
-    const char* wifi_key = config["wifi"]["key"];
-
     WiFi.mode(WIFI_STA);
-    WiFi.begin(wifi_ssid, wifi_key);
+    WiFi.begin(
+        configuration.wifi.ssid, 
+        configuration.wifi.key
+    );
     
     Serial.print("Connecting to wifi..");
 
@@ -111,6 +143,10 @@ void connectWifi(JsonObject& config)
 
 void prepareLedStrip()
 {
+    strip.updateLength(configuration.device.pixels);
+    strip.setPin(LED_STRIP_PIN);
+    strip.updateType(LED_STRIP_TYPE);
+    
     strip.begin();
     strip.clear();
     strip.show();

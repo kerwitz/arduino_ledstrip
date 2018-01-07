@@ -1,9 +1,7 @@
 #include "SceneHelper.h"
 
-SceneHelper::SceneHelper(const char * deviceName)
-{
-    _deviceName = deviceName;
-  
+SceneHelper::SceneHelper()
+{  
     fauxmo.onSetState([&](unsigned char sceneId, const char * sceneName, bool state) {
         _handleSceneSwitch(sceneId, state);
     });
@@ -11,6 +9,11 @@ SceneHelper::SceneHelper(const char * deviceName)
     fauxmo.onGetState([&](unsigned char sceneId, const char * sceneName) {
         return _activeScene == sceneId;
     });  
+}
+
+void SceneHelper::setDeviceName(const char* deviceName)
+{
+    _deviceName = deviceName;
 }
 
 /**

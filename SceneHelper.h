@@ -13,9 +13,10 @@ typedef struct {
 typedef std::function<void(uint8_t, uint8_t, uint8_t)> onChangeHandler;
 
 class SceneHelper {
-  public:    
-    SceneHelper(const char * deviceName);
+  public:
+    SceneHelper();
     
+    void setDeviceName(const char * deviceName);
     void add(Scene scene);
     void onChange(onChangeHandler callback) { _onChangeHandler = callback; }
     void handle();
