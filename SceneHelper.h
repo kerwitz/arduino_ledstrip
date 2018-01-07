@@ -8,6 +8,7 @@ typedef struct {
     uint8_t r;
     uint8_t g;
     uint8_t b;
+    bool isOffSwitch = false;
 } Scene;
 
 typedef std::function<void(uint8_t, uint8_t, uint8_t)> onChangeHandler;

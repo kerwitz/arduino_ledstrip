@@ -27,11 +27,15 @@ void SceneHelper::add(Scene scene)
     sprintf_P(sceneName, "%s: %s", _deviceName, scene.name);
   
     scene.id = fauxmo.addDevice(sceneName);
-
-    Serial.printf(
-        "[SceneHelper] Adding scene with name \"%s\" and color rgb(%d,%d,%d).",
-        sceneName, scene.r, scene.g, scene.b
-    );
+    
+    if (scene.isOffSwitch) {
+        Serial.printf("Adding off switch scene with name \"%s\".", sceneName);
+    } else {
+        Serial.printf(
+            "[SceneHelper] Adding scene with name \"%s\" and color rgb(%d,%d,%d).",
+            sceneName, scene.r, scene.g, scene.b
+        );
+    }
   
     _scenes.push_back(scene);
 }
@@ -43,16 +47,16 @@ void SceneHelper::handle()
 
 void SceneHelper::_handleSceneSwitch(unsigned char sceneId, bool state)
 {
-    if (!state || sceneId == '3') {
-        _activeScene = -1;
-        _fireChangeHandler(0, 0, 0);
-        return;
-    }
-
-    _activeScene = sceneId;
-
     for (unsigned int i = 0; i < _scenes.size(); i++) {
         if (_scenes[i].id != sceneId) continue;
+        
+        if (!state || _scenes[i].isOffSwitch) {        
+            _activeScene = -1;
+            _fireChangeHandler(0, 0, 0);
+            return;
+        }
+        
+        _activeScene = sceneId;
         _fireChangeHandler(_scenes[i].r, _scenes[i].g, _scenes[i].b);
     }
 }

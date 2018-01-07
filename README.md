@@ -39,13 +39,13 @@ The project can be configured via `data\config.json`. Simply copy `data\config.e
         },
         {
             "name": "Off",
-            "rgb": [0,0,0]
+            "isOffSwitch": true
         }
     ]
 }
 ```
 
-Assuming "LED Strip" as `DEVICE_NAME` (see setup below), theses scenes will show up in the Alexa app as "LED Strip: Sunlight" and "LED Strip: Aquarium". Please note that the third scene is currently assumed to be an off trigger (see [#1](https://github.com/kerwitz/arduino_ledstrip/issues/1)).
+Assuming "LED Strip" as `DEVICE_NAME` (see setup below), theses scenes will show up in the Alexa app as "LED Strip: Sunlight" and "LED Strip: Aquarium". You may mark scenes as off switches by setting `isOffSwitch` to true. These scenes will never be activated but instead trigger the strip to return to rgb(0,0,0) and reset the active scene.
 
 Setup
 ----------

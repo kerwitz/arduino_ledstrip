@@ -166,11 +166,18 @@ void loadScenes(JsonObject& config)
         uint8_t g = color[1];
         uint8_t b = color[2];
         
+        bool isOffSwitch = sceneInfo["isOffSwitch"];
+        
         Scene scene;
         scene.name = name;
-        scene.r = r;
-        scene.g = g;
-        scene.b = b;
+        
+        if (isOffSwitch) {
+            scene.isOffSwitch = true;
+        } else {
+            scene.r = r;
+            scene.g = g;
+            scene.b = b;
+        }
         
         sceneHelper.add(scene);
     }
