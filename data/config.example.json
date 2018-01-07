@@ -1,4 +1,11 @@
 {
+    "device": {
+        "name": "LED Strip",
+        "pixels": 120
+    },
+    "animation": {
+        "duration": 1000
+    },
     "wifi": {
         "ssid": "some fancy wifi",
         "key": "wifi key"
