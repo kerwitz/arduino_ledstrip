@@ -1,7 +1,7 @@
 Arduino LED strip Controller with Alexa support
 ===================
 
-This Arduino project allows you to control a RGB LED strip via Amazon Alexa voice commands. It uses fauxmoESP to simulate network switches for every scene you configure, which can be used with Echo routines or the like. Different scenes will be faded into each other to blend in with Philips Hue lamps. The project supports OTA updates so you can provide new scenes and update the existing ones fairly easy.
+This Arduino project allows you to control a RGB LED strip via Amazon Alexa voice commands. It uses fauxmoESP to simulate wifi switches for every scene you configure, which can be used with Echo routines or the like. Different scenes will be faded into each other to blend in with Philips Hue lamps. The project supports OTA updates so you can provide new scenes and update the existing ones fairly easy.
 
 Dependencies
 ------------
@@ -45,7 +45,7 @@ The project can be configured via `data\config.json`. Simply copy `data\config.e
 }
 ```
 
-Assuming "LED Strip" as `DEVICE_NAME` (see setup below), theses scenes will show up in the Alexa app as "LED Strip: Sunlight" and "LED Strip: Aquarium". You may mark scenes as off switches by setting `isOffSwitch` to true. These scenes will never be activated but instead trigger the strip to return to rgb(0,0,0) and reset the active scene.
+Assuming your device name to be "LED Strip", theses scenes will show up in the Alexa app as "LED Strip: Sunlight" and "LED Strip: Aquarium". You may mark scenes as off switches by setting `isOffSwitch` to true. These scenes will never be activated but instead trigger the strip to return to rgb(0,0,0) and reset the active scene.
 
 ### Configuring pin and strip type
 By default the project assumes your strip to be connected to the **D1 pin** and to support **GRB + 800khz** mode. If your setup differs from these assumptions you can change the constants `LED_STRIP_TYPE` and `LED_STRIP_PIN` in the `StripConfig.h` header file.
