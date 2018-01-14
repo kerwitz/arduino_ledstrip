@@ -32,7 +32,7 @@ struct configurationStruct {
     struct animationStruct {
         int duration;
     };
-    
+
     wifiStruct wifi;
     deviceStruct device;
     animationStruct animation;
@@ -41,31 +41,31 @@ struct configurationStruct {
 configurationStruct configuration;
 
 void setup() {
-    Serial.begin(57600);    
+    Serial.begin(57600);
 
     SPIFFS.begin();
-    
+
     if (!readConfigurationAndInit()) return;
-    
+
     otaHelper.setDeviceName(configuration.device.name);
     sceneHelper.setDeviceName(configuration.device.name);
-    
+
     prepareLedStrip();
     otaHelper.setup();
 
-    sceneHelper.onChange([&](uint8_t r, uint8_t g, uint8_t b) {        
+    sceneHelper.onChange([&](uint8_t r, uint8_t g, uint8_t b) {
         Serial.printf(
             "Scene changed, changing color of strip to rgb(%d,%d,%d).\n",
             r, g, b
         );
-        
+
         // Our current color is the last animations target color.
         startColor = targetColor;
         targetColor = RgbColor(r, g, b);
 
         animations.StartAnimation(
-            0, 
-            configuration.animation.duration, 
+            0,
+            configuration.animation.duration,
             blendingAnimation
         );
     });
@@ -74,7 +74,7 @@ void setup() {
 void loop() {
     otaHelper.handle();
     sceneHelper.handle();
-    
+
     if (animations.IsAnimating())
     {
         animations.UpdateAnimations();
@@ -91,14 +91,14 @@ void blendingAnimation(const AnimationParam& param)
     );
 
     for (uint16_t i = 0; i < configuration.device.pixels; i++) {
-        strip.setPixelColor(i, color.G, color.R, color.B);
+        strip.setPixelColor(i, strip.Color(color.R, color.G, color.B));
     }
 }
 
 bool readConfigurationAndInit()
 {
     File configFile = SPIFFS.open("/config.json", "r");
-    
+
     if (!configFile) {
         Serial.println("Failed to open config file");
         return false;
@@ -110,16 +110,16 @@ bool readConfigurationAndInit()
 
     DynamicJsonBuffer jsonBuffer;
     JsonObject& config = jsonBuffer.parseObject(buf.get());
-    
+
     configuration.wifi.ssid = config["wifi"]["ssid"];
     configuration.wifi.key = config["wifi"]["key"];
     configuration.device.name = config["device"]["name"];
     configuration.device.pixels = config["device"]["pixels"];
     configuration.animation.duration = config["animation"]["duration"];
-    
+
     connectWifi();
     loadScenes(config);
-    
+
     return true;
 }
 
@@ -127,17 +127,17 @@ void connectWifi()
 {
     WiFi.mode(WIFI_STA);
     WiFi.begin(
-        configuration.wifi.ssid, 
+        configuration.wifi.ssid,
         configuration.wifi.key
     );
-    
+
     Serial.print("Connecting to wifi..");
 
     while (WiFi.status() != WL_CONNECTED) {
         Serial.print(".");
         delay(500);
     }
-    
+
     Serial.println(".. ok.");
 }
 
@@ -146,31 +146,31 @@ void prepareLedStrip()
     strip.updateLength(configuration.device.pixels);
     strip.setPin(LED_STRIP_PIN);
     strip.updateType(LED_STRIP_TYPE);
-    
+
     strip.begin();
     strip.clear();
     strip.show();
-    
+
     Serial.println("Cleared led strip.");
 }
 
 void loadScenes(JsonObject& config)
 {
     JsonArray& scenes = config["scenes"];
-    
+
     for (auto& sceneInfo : scenes) {
         char* name = strdup(sceneInfo["name"]);
         JsonArray& color = sceneInfo["rgb"];
-        
+
         uint8_t r = color[0];
         uint8_t g = color[1];
         uint8_t b = color[2];
-        
+
         bool isOffSwitch = sceneInfo["isOffSwitch"];
-        
+
         Scene scene;
         scene.name = name;
-        
+
         if (isOffSwitch) {
             scene.isOffSwitch = true;
         } else {
@@ -178,7 +178,7 @@ void loadScenes(JsonObject& config)
             scene.g = g;
             scene.b = b;
         }
-        
+
         sceneHelper.add(scene);
     }
 }
