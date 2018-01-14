@@ -47,14 +47,15 @@ The project can be configured via `data\config.json`. Simply copy `data\config.e
 
 Assuming "LED Strip" as `DEVICE_NAME` (see setup below), theses scenes will show up in the Alexa app as "LED Strip: Sunlight" and "LED Strip: Aquarium". You may mark scenes as off switches by setting `isOffSwitch` to true. These scenes will never be activated but instead trigger the strip to return to rgb(0,0,0) and reset the active scene.
 
+### Configuring pin and strip type
+By default the project assumes your strip to be connected to the **D1 pin** and to support **GRB + 800khz** mode. If your setup differs from these assumptions you can change the constants `LED_STRIP_TYPE` and `LED_STRIP_PIN` in the `StripConfig.h` header file.
+
 Setup
 ----------
 * **[Download the latest release](https://github.com/kerwitz/arduino_ledstrip/releases)**
 * **Install all dependencies**
 
   Either through the IDE or manually into the `libraries` folder.
-* **Change constants according to your setup if needed**
+* **Deploy the project to your Arduino device**
 
-  The project assumes your strip to be **GRB + 800khz** supportive. Change `LED_STRIP_TYPE` in `ledstrip.ino` if you are running a different type of led strip. Currently the strip will be located at **PIN D1** (Wemos D1 Mini). Update `LED_STRIP_PIN` if you have connected your stip to another pin.
- 
-That's it. Once you've configured everything and deployed the code to your Arduino device (such as a Wemos D1 Mini) you can discover the emulated network switches from within the Alexa app. Once your Echo device has discovered the switches you may use them to your liking, for example from within routines.
+That's it. Once you've configured everything and deployed the code you can discover the emulated network switches from within the Alexa app. Once your Echo device has discovered the switches you may use them to your liking, for example from within routines.

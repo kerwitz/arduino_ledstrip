@@ -8,9 +8,7 @@
 #include <OTAHelper.h>
 
 #include "SceneHelper.h"
-
-#define LED_STRIP_PIN D1
-#define LED_STRIP_TYPE NEO_GRB + NEO_KHZ800
+#include "StripConfig.h"
 
 OTAHelper otaHelper;
 SceneHelper sceneHelper;
