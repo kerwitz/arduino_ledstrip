@@ -16,10 +16,10 @@ class SceneHelper {
     SceneHelper();
 
     void
-        setDeviceName(const char * deviceName);
-        add(Scene scene);
+        setDeviceName(const char * deviceName),
+        add(Scene scene),
+        handle(),
         onChange(onChangeHandler callback) { _onChangeHandler = callback; }
-        handle();
 
   private:
     const char * _deviceName;
@@ -29,6 +29,6 @@ class SceneHelper {
     fauxmoESP fauxmo;
 
     void
-        _handleSceneSwitch(unsigned char sceneId, bool state);
+        _handleSceneSwitch(unsigned char sceneId, bool state),
         _fireChangeHandler(uint8_t r, uint8_t g, uint8_t b);
 };
