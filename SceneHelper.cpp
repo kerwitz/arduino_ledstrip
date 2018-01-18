@@ -29,10 +29,10 @@ void SceneHelper::add(Scene scene)
     scene.id = fauxmo.addDevice(sceneName);
 
     if (scene.isOffSwitch) {
-        Serial.printf("[SceneHelper] Adding off switch scene with name \"%s\".", sceneName);
+        Serial.printf("[SceneHelper] Adding off switch scene with name \"%s\".\n", sceneName);
     } else {
         Serial.printf(
-            "[SceneHelper] Adding scene with name \"%s\" and color rgb(%d,%d,%d).",
+            "[SceneHelper] Adding scene with name \"%s\" and color rgb(%d,%d,%d).\n",
             sceneName, scene.r, scene.g, scene.b
         );
     }
