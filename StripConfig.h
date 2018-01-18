@@ -11,4 +11,4 @@
  * @see https://github.com/adafruit/Adafruit_NeoPixel
  * @see https://github.com/adafruit/Adafruit_NeoPixel/blob/master/examples/strandtest/strandtest.ino
  */
-#define LED_STRIP_TYPE NEO_GRB + NEO_KHZ800
+#define LED_STRIP_TYPE NEO_RGB + NEO_KHZ800
