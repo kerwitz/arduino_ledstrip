@@ -53,7 +53,7 @@ void setup() {
 
     sceneHelper.onChange([&](uint8_t r, uint8_t g, uint8_t b) {
         Serial.printf(
-            "Scene changed, changing color of strip to rgb(%d,%d,%d).\n",
+            "\nScene changed, changing color of strip to rgb(%d,%d,%d).\n",
             r, g, b
         );
 
@@ -95,12 +95,16 @@ void blendingAnimation(const AnimationParam& param)
 
 bool readConfigurationAndInit()
 {
+    Serial.print("Reading configuration file.....");
+
     File configFile = SPIFFS.open("/config.json", "r");
 
     if (!configFile) {
         Serial.println("Failed to open config file");
         return false;
     }
+
+    Serial.println(".. ok.");
 
     size_t size = configFile.size();
     std::unique_ptr<char[]> buf(new char[size]);
@@ -114,6 +118,18 @@ bool readConfigurationAndInit()
     configuration.device.name = config["device"]["name"];
     configuration.device.pixels = config["device"]["pixels"];
     configuration.animation.duration = config["animation"]["duration"];
+
+    Serial.printf(
+        "\nconfiguration.wifi.ssid = %s\n"
+        "configuration.wifi.key = *********\n"
+        "configuration.device.name = %s\n"
+        "configuration.device.pixels = %d\n"
+        "configuration.animation.duration = %d\n\n",
+        configuration.wifi.ssid,
+        configuration.device.name,
+        configuration.device.pixels,
+        configuration.animation.duration
+    );
 
     connectWifi();
     loadScenes(config);
@@ -136,7 +152,7 @@ void connectWifi()
         delay(500);
     }
 
-    Serial.println(".. ok.");
+    Serial.println(".. ok.\n");
 }
 
 void prepareLedStrip()

@@ -14,6 +14,8 @@ SceneHelper::SceneHelper()
 void SceneHelper::setDeviceName(const char* deviceName)
 {
     _deviceName = deviceName;
+
+    Serial.printf("\n[SceneHelper] _deviceName = %s\n\n", _deviceName);
 }
 
 /**
