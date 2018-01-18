@@ -45,12 +45,6 @@ void setup() {
 
     if (!readConfigurationAndInit()) return;
 
-    otaHelper.setDeviceName(configuration.device.name);
-    sceneHelper.setDeviceName(configuration.device.name);
-
-    prepareLedStrip();
-    otaHelper.setup();
-
     sceneHelper.onChange([&](uint8_t r, uint8_t g, uint8_t b) {
         Serial.printf(
             "\nScene changed, changing color of strip to rgb(%d,%d,%d).\n",
@@ -132,7 +126,15 @@ bool readConfigurationAndInit()
     );
 
     connectWifi();
-    loadScenes(config);
+
+    otaHelper.setDeviceName(configuration.device.name);
+    sceneHelper.setDeviceName(configuration.device.name);
+
+    otaHelper.setup();
+
+    prepareLedStrip();
+
+    loadScenes(config["scenes"]);
 
     return true;
 }
@@ -165,13 +167,11 @@ void prepareLedStrip()
     strip.clear();
     strip.show();
 
-    Serial.println("Cleared led strip.");
+    Serial.println("Cleared led strip.\n");
 }
 
-void loadScenes(JsonObject& config)
+void loadScenes(JsonArray& scenes)
 {
-    JsonArray& scenes = config["scenes"];
-
     for (auto& sceneInfo : scenes) {
         char* name = strdup(sceneInfo["name"]);
         JsonArray& color = sceneInfo["rgb"];
