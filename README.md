@@ -57,5 +57,6 @@ Setup
 
   Either through the IDE or manually into the `libraries` folder.
 * **Deploy the project to your Arduino device**
+* **Discover new smart home devices in the Alexa app**
 
 That's it. Once you've configured everything and deployed the code you can discover the emulated network switches from within the Alexa app. Once your Echo device has discovered the switches you may use them to your liking, for example from within routines.
