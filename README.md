@@ -13,7 +13,7 @@ Dependencies
 
 Configuration
 ------------
-The project can be configured via `data\config.json`. Simply copy `data\config.example.json`, update it with your own values and [upload it to the Arduino](http://esp8266.github.io/Arduino/versions/2.0.0/doc/filesystem.html#uploading-files-to-file-system) (but use a more recent version of the plugin than stated in the docs).
+The project can be configured via `data\config.json`. Simply copy `data\config.example.json`, update it with your own values and [upload it to the Arduino](http://esp8266.github.io/Arduino/versions/2.3.0/doc/filesystem.html#uploading-files-to-file-system) (but use a [more recent version](https://github.com/esp8266/arduino-esp8266fs-plugin/releases/) of the plugin than stated in the docs, such as [0.3.0](https://github.com/esp8266/arduino-esp8266fs-plugin/archive/0.3.0.zip)).
 
 ```
 {
